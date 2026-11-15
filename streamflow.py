@@ -3,46 +3,49 @@ import numpy as np
 
 
 def load_streamflow(filename):
-"""Load dates and streamflow data from the CSV file."""
-data = np.genfromtxt(
-filename,
-delimiter=",",
-skip_header=1,
-dtype=str
+  """Load dates and streamflow data from the CSV file."""
+  data = np.genfromtxt(
+    filename,
+    delimiter=",",
+    skip_header=1,
+    dtype=str
 )
 
-dates = data[:, 0].astype("datetime64")
+  dates = data[:, 0].astype("datetime64")
+  y_1 = data[:, 1].astype(float)
+  y_2 = data[:, 2].astype(float)
+  y_3 = data[:, 3].astype(float)
+  y_4 = data[:, 4].astype(float)
+  y_5 = data[:, 5].astype(float)
 
-y_1 = data[:, 1].astype(float)
-y_2 = data[:, 2].astype(float)
-y_3 = data[:, 3].astype(float)
-y_4 = data[:, 4].astype(float)
-y_5 = data[:, 5].astype(float)
+  flows = np.column_stack((y_1, y_2, y_3, y_4, y_5))
 
-flows = np.column_stack((y_1, y_2, y_3, y_4, y_5))
-
-return dates, flows
+  return dates, flows
 
 
 def plot_streamflow(dates, flows, sites):
-"""Plot the streamflow data for all five gauges."""
-plt.figure(figsize=(12, 5))
+    """Plot the streamflow data for all five gauges."""
+    plt.figure(figsize=(12, 5))
 
-colors = ['purple', 'teal', 'green', 'orange', 'orangered']
+    colors = ['purple', 'teal', 'green', 'orange', 'orangered']
 
-for i in range(len(sites)):
-plt.plot(dates, flows[:, i], color=colors[i], label=sites[i])
+    plt.plot(dates, flows[:, 0], color='purple', label=sites[0])
+    plt.plot(dates, flows[:, 1], color='teal', label=sites[1])
+    plt.plot(dates, flows[:, 2], color='green', label=sites[2])
+    plt.plot(dates, flows[:, 3], color='orange', label=sites[3])
+    plt.plot(dates, flows[:, 4], color='orangered', label=sites[4])
 
-plt.title('Provo River Streamflow Data (2021)')
-plt.xlabel('Date')
-plt.ylabel('Flowrate (cfs)')
-plt.legend(title='Site Numbers')
-plt.grid()
-plt.xticks(rotation=45)
-plt.xlim(np.datetime64('2021-06-01'), np.datetime64('2021-07-01'))
+    plt.title('Provo River Streamflow Data (2021)')
+    plt.xlabel('Date')
+    plt.ylabel('Flowrate (cfs)')
+    plt.legend(title='Site Numbers')
+    plt.grid()
+    plt.xticks(rotation=45)
+    plt.xlim(np.datetime64('2021-06-01'), np.datetime64('2021-07-01'))
 
-plt.tight_layout()
-plt.show()
+    plt.tight_layout()
+    plt.savefig("provo_streamflow.png", dpi=150, bbox_inches="tight")
+    plt.show()
 
 
 # Main program

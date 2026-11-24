@@ -84,4 +84,3 @@ threshold = float(input("\nEnter a flow threshold in cfs: "))
 for i, site in enumerate(sites):
     hours = np.sum(flows[:, i] > threshold) * 0.25
     print(f"Gauge {site}: {hours:.2f} hours above {threshold} cfs")
-A
